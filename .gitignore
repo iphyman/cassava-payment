@@ -1,0 +1,41 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+example-ui/node_modules
+admin-ui/node_modules
+api/node_modules
+example-ui/.pnp
+admin-ui/.pnp
+api/.pnp
+example-ui.pnp.js
+admin-ui/.pnp.js
+api/.pnp.js
+
+# testing
+example-ui/coverage
+
+# production
+example-ui/build
+admin-ui/build
+api/build
+
+api/build
+api/.build
+api/.serverless
+api/.dynamodb
+
+**/node_modules/**
+**/build/**
+
+# misc
+.DS_Store
+example-ui/.env.local
+admin-ui/.env.local
+example-ui/.env.development.local
+admin-ui/.env.development.local
+.env.test.local
+example-ui/.env.production.local
+
+example-ui/npm-debug.log*
+example-ui/yarn-debug.log*
+example-ui/yarn-error.log*
