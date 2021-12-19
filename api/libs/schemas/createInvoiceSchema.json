@@ -1,0 +1,119 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "required": [
+    "merchant_id",
+    "price",
+    "redirect_url"
+  ],
+  "properties": {
+    "order_id": {
+      "type": "string",
+      "title": "Order ID",
+      "description": "Merchant generated order id"
+    },
+    "item_description": {
+      "type": "string",
+      "minLength": 15,
+      "title": "Item description",
+      "description": "Invoice item description"
+    },
+    "merchant_id": {
+      "type": "string",
+      "minLength": 20,
+      "title": "Merchant ID",
+      "description": "ID of the merchant"
+    },
+    "buyer": {
+      "type": "object",
+      "title": "Buyer's details",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Name",
+          "description": "Buyer's name"
+        },
+        "email": {
+          "type": "string",
+          "title": "Email",
+          "description": "Buyer's email"
+        },
+        "phone": {
+          "type": "string",
+          "title": "Phone number",
+          "description": "Buyer's phone number"
+        },
+        "address1": {
+          "type": "string",
+          "title": "Address 1",
+          "description": "Buyer's house address 1"
+        },
+        "address2": {
+          "type": "string",
+          "title": "Address 2",
+          "description": "Buyer's house address 2"
+        },
+        "city": {
+          "type": "string",
+          "title": "City",
+          "description": "Buyer's city of residence"
+        },
+        "region": {
+          "type": "string",
+          "title": "Region",
+          "description": "Buyer's region of residence"
+        },
+        "postal_code": {
+          "type": "string",
+          "title": "Postal code",
+          "description": "Buyer's postal code"
+        },
+        "country": {
+          "type": "string",
+          "title": "country",
+          "description": "Buyer's country of residence"
+        },
+        "notify": {
+          "type": "boolean",
+          "title": "Notify",
+          "description": "Send invoice details to buyer email"
+        }
+      }
+    },
+    "currency": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 4,
+      "title": "Currency",
+      "description": "Merchants pricing currency"
+    },
+    "blockchain": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 4,
+      "title": "Blockchain",
+      "description": "The blockchain you do want to receive payment on"
+    },
+    "price": {
+      "type": "number",
+      "title": "Product price",
+      "description": "Merchant price for the product, service or item"
+    },
+    "notification_url": {
+      "type": "string",
+      "title": "Webhook notification URL",
+      "description": "Where merchant do like to receive transaction events"
+    },
+    "redirect_url": {
+      "type": "string",
+      "title": "Redirect URL",
+      "description": "URL to redirect buyer to on successful checkout"
+    },
+    "close_url": {
+      "type": "number",
+      "title": "Close URL",
+      "description": "URL to redirect user on order cancellation"
+    }
+  }
+}

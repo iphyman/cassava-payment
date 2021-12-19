@@ -1,0 +1,9 @@
+getMerchantTransactionsFromServiceUi:
+  description: endpoint for user to get all his/her merchant accounts
+  handler: functions/merchant/transactions.handler
+  events:
+    - http:
+        path: /merchants/transactions
+        cors: true
+        method: GET
+        authorizer: aws_iam

@@ -1,21 +1,38 @@
-import { Entity } from "dynamodb-toolbox";
-import { DatabaseTable } from "../shared";
+import { Model, Schema } from "mongoose";
+import { getConnection } from "libs/mongodb";
 
 /**
- * Create model to store merchant accounts
+ * Create schema and model to store merchant accounts
  * User can have multiple merchant accounts
  */
-export const Merchant = new Entity({
-  name: "Merchant",
-  attributes: {
-    merchantId: { type: "string", partitionKey: true, required: true },
-    userId: { type: "string", sortKey: true },
-    apiKey: { type: "string", required: true },
-    label: { type: "string" },
-    enabled: { type: "boolean", default: true },
-    coldWalletAddress: { type: "string", required: true },
-    createdAt: { type: "string", default: new Date() },
-    updatedAt: { type: "string", default: new Date() }
+
+export interface Merchant {
+  merchant_id: string;
+  user_id: string;
+  api_key: string;
+  label: string;
+  description?: string;
+  enabled: boolean;
+  cold_wallet_address: string;
+}
+
+const schema: Schema = new Schema<Merchant>(
+  {
+    merchant_id: { type: String, unique: true, required: true },
+    user_id: { type: String, required: true },
+    api_key: { type: String, unique: true, required: true },
+    label: { type: String, required: true },
+    description: { type: String, required: false },
+    enabled: { type: Boolean, default: true },
+    cold_wallet_address: { type: String, required: true }
   },
-  table: DatabaseTable
-});
+  {
+    timestamps: { createdAt: "created_at", updatedAt: "updated_at" }
+  }
+);
+
+export const MerchantModel = async (): Promise<Model<Merchant>> => {
+  const connection = await getConnection();
+
+  return connection.model<Merchant>("Merchant", schema);
+};

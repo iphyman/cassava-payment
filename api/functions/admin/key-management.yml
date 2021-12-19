@@ -1,0 +1,15 @@
+apiKeyManagement:
+  description: endpoint to manage api key issued to merchants
+  handler: functions/admin/managekey.handler
+  events:
+    - http:
+        path: /admin/manage-key
+        cors: true
+        method: POST
+        authorizer: aws_iam
+        # request:
+        #   schemas:
+        #     application/json:
+        #       schema: ${file(libs/schemas/manageKeySchema.json)}
+        #       name: ManageKeyModel
+        #       description: "Validation model for updating an Api key"

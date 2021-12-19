@@ -1,0 +1,15 @@
+createApiKey:
+  description: endpoint to issue a new request api key to merchant
+  handler: functions/create-apikey/createkey.handler
+  events:
+    - http:
+        path: /merchant/signup
+        cors: true
+        method: POST
+        authorizer: aws_iam
+        # request:
+        #   schemas:
+        #     application/json:
+        #       schema: ${file(libs/schemas/createApiKeySchema.json)}
+        #       name: CreateApiKeyModel
+        #       description: "Validation model for issuing an Api key"

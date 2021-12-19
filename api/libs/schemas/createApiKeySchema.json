@@ -1,0 +1,27 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "CreateApiKeyModel",
+  "required": ["label", "cold_wallet_address"],
+  "properties": {
+    "user_id": {
+      "type": "string",
+      "title": "User ID",
+      "description": "Unique ID assigned to user"
+    },
+    "label": {
+      "type": "string",
+      "title": "Label",
+      "description": "Short name for the new Api key"
+    },
+    "description": {
+      "type": "string",
+      "title": "Description",
+      "description": "Description"
+    },
+    "cold_wallet_address": {
+      "type": "string"
+    }
+  }
+}

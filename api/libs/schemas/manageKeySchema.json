@@ -1,0 +1,18 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "ManageApiKeyModel",
+  "required": ["api_key"],
+  "properties": {
+    "body": {
+      "properties": {
+        "api_key": {
+          "type": "string",
+          "title": "API key",
+          "description": "Merchant API key to update"
+        }
+      }
+    }
+  }
+}

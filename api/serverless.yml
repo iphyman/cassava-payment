@@ -1,146 +1,54 @@
-service: cassava-pay
-
+service: cassava-payment-api
+variablesResolutionMode: 20210326
+useDotenv: true
 provider:
   name: aws
   runtime: nodejs14.x
-  lambdaHashingVersion: "20201221"
-  environment:
-    DYNAMODB_TABLE: cassava-payment-table
-
-  ## Create ApiKey usage plans only free at the moment
+  stage: dev
+  region: us-west-2
+  lambdaHashingVersion: 20201221
+  eventBridge:
+    useCloudFormation: true
   apiGateway:
     apiKeys:
-      - free:
-          - dev-free-apikey
+      - standardPlan:
+          - free-forever-api-key
+      - proPlan:
+          - pro-api-key
     usagePlan:
-      - free:
+      - standardPlan:
           quota:
-            limit: 5000
+            limit: 500
             offset: 2
             period: MONTH
           throttle:
-            burstLimit: 200
-            rateLimit: 100
-
-  ## Iam role permission policy to use dynamodb
-  iam:
-    role:
-      statements:
-        - Effect: Allow
-          Action:
-            - dynamodb:Query
-            - dynamodb:Scan
-            - dynamodb:GetItem
-            - dynamodb:PutItem
-            - dynamodb:UpdateItem
-            - dynamodb:DeleteItem
-          Resource: "arn:aws:dynamodb:${aws:region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
-
-## Api routes
+            burstLimit: 100
+            rateLimit: 50
+      - proPlan:
+          quota:
+            limit: 50000
+            offset: 1
+            period: MONTH
+          throttle:
+            burstLimit: 2000
+            rateLimit: 1000
+package:
+  individually: true
+plugins:
+  - serverless-bundle
+  - serverless-offline
 functions:
-  ## Authentication Verification handler for control panel uses JWT
-  verify-claim:
-    handler: functions/authentication/handler.verify
-
-  ## Users API
-  RegisterUser:
-    handler: functions/authentication/handler.register
-    events:
-      - http:
-          method: POST
-          path: /api/users/create_account
-          cors: true
-
-  loginUser:
-    handler: functions/authentication/handler.login
-    events:
-      - http:
-          method: POST
-          path: /api/users/login
-          cors: true
-
-  createMerchantApiKey:
-    handler: functions/merchant/handler.createApiKey
-    events:
-      - http:
-          method: POST
-          path: /api/users/create_api_key
-          cors: true
-          authorizer:
-            name: verify-claim
-            identitySource: method.request.header.Authorization
-            resultTtlInSeconds: 3600
-
-  enableDisableApiKey:
-    handler: functions/merchant/handler.enableDisableApiKey
-    events:
-      - http:
-          method: POST
-          path: /api/admin/update_apikey
-          cors: true
-          authorizer:
-            name: verify-claim
-            identitySource: method.request.header.Authorization
-            resultTtlInSeconds: 3600
-
-  ## Create new transaction
-  createTransaction:
-    handler: functions/transactions/handler.createTransaction
-    events:
-      - http:
-          method: POST
-          path: /api/merchants/create_transaction
-          cors: true
-          private: true
-
-  ## Process new transction block
-  # processTransaction:
-  #   handler: functions/transactions/handler.processTransaction
-  #   dependsOn: TransactionBlock
-  #   events:
-  #     - sns:
-  #         arn: !Ref TransactionBlock
-  #         topicName: transaction-block-event
-
-  ## Forward account balance to merchants coldwallet
-  ## will be implemented in the future
-  # forwardToColdWallet:
-  #   handler: functions/transactions/handler.forwardPayment
-  #   dependsOn: TransactionBlock
-  #   events:
-  #     - sns:
-  #         arn: !Ref TransactionBlock
-  #         topicName: transaction-block-event
+  - ${file(functions/admin/key-management.yml)}
+  - ${file(functions/create-apikey/apikey.yml)}
+  - ${file(functions/create-invoice/invoice.yml)}
+  - ${file(functions/cron/expired-cron.yml)}
+  - ${file(functions/cron/reef-cron.yml)}
+  - ${file(functions/get-invoice/invoice.yml)}
+  - ${file(functions/get-invoices/invoice.yml)}
+  - ${file(functions/merchant/merchant-account.yml)}
+  - ${file(functions/merchant/merchant-transactions.yml)}
 
 resources:
-  Resources:
-    DynamoDbTable:
-      Type: "AWS::DynamoDB::Table"
-      DeletionPolicy: Retain
-      Properties:
-        AttributeDefinitions:
-          - AttributeName: id
-            AttributeType: S
-        KeySchema:
-          - AttributeName: id
-            KeyType: HASH
-        BillingMode: PAY_PER_REQUEST
-        TableName: ${self:provider.environment.DYNAMODB_TABLE}
-
-    # SNS Topics will be implemented in the future
-    # TransactionBlock:
-    #   Type: AWS::SNS::Topic
-    #   Properties:
-    #     DisplayName: A New Transaction Block Has Been Added
-    #     TopicName: transaction-block-event
-
-plugins:
-  - serverless-plugin-typescript
-  - serverless-dynamodb-local
-  - serverless-offline
-
-package:
-  exclude:
-    - test/**
-    - coverage/**
-    - .nyc_output/**
+  - ${file(resources/aws/cognito-user-pool.yml)}
+  - ${file(resources/aws/cognito-identity-pool.yml)}
+  - ${file(resources/aws/api-gateway-error.yml)}

@@ -1,0 +1,15 @@
+createInvoice:
+  description: endpoint for merchants to create an order invoice
+  handler: functions/create-invoice/create.handler
+  events:
+    - http:
+        path: /invoices
+        cors: true
+        method: POST
+        private: true
+        # request:
+        #   schemas:
+        #     application/json:
+        #       schema: ${file(libs/schemas/createInvoiceSchema.json)}
+        #       name: CreateInvoiceModel
+        #       description: "Validation model for creating an invoice"

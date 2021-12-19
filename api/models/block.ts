@@ -1,23 +1,28 @@
-import { Entity } from "dynamodb-toolbox";
-import { DatabaseTable } from "../shared";
+import { Model, Schema } from "mongoose";
+import { getConnection } from "libs/mongodb";
 
 /**
- * Create model to store last synced block height
+ * Create schema and model to store last synced block height
  */
-export const Block = new Entity({
-  name: "Block",
-  attributes: {
-    id: {
-      type: "string",
-      partitionKey: true,
-      required: true,
-      default: "LAST_PROCESSED_BLOCK"
-    },
-    blockchain: { type: "string", sortKey: true, default: "REEF_BLOCKCHAIN" },
-    hash: { type: "number", required: true },
-    height: { type: "number", required: true },
-    createdAt: { type: "string", default: new Date() },
-    updatedAt: { type: "string", default: new Date() }
+interface Block {
+  blockchain: string;
+  block_hash?: string;
+  block_height: number;
+}
+
+const schema: Schema = new Schema<Block>(
+  {
+    blockchain: { type: String, unique: true, default: "REEF_BLOCKCHAIN" },
+    block_hash: { type: String, required: false },
+    block_height: { type: Number, required: true }
   },
-  table: DatabaseTable
-});
+  {
+    timestamps: { createdAt: "created_at", updatedAt: "updated_at" }
+  }
+);
+
+export const BlockModel = async (): Promise<Model<Block>> => {
+  const connection = await getConnection();
+
+  return connection.model<Block>("BlockModel", schema);
+};

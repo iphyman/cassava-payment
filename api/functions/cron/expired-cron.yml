@@ -1,0 +1,6 @@
+updateInvoiceStatus:
+  description: endpoint called every minute to update all invoice status
+  handler: functions/cron/expired.handler
+  events:
+    - eventBridge:
+        schedule: rate(2 minutes)

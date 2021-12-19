@@ -1,0 +1,6 @@
+reefTransactions:
+  description: endpoint called every minute to update transaction status
+  handler: functions/cron/reef.handler
+  events:
+    - eventBridge:
+        schedule: rate(2 minutes)
