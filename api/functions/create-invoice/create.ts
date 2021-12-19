@@ -17,5 +17,8 @@ export const handler: ApiHandler = async event => {
     );
   }
 
-  return Response.ok({ url: "http://localhost/checkout/" + invoice });
+  return Response.ok({
+    url: "https://cassavapay.netlify.app/checkout/" + invoice,
+    invoice_id: invoice
+  });
 };

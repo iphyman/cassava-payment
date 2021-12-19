@@ -1,0 +1,13 @@
+{
+  "name": "@cassavapay/monorepo",
+  "version": "1.0.0",
+  "description": "A mono repo for cassavapay",
+  "repository": "https://github.com/iphyman/cassava-payment.git",
+  "author": "iphyman",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build:ui": "yarn --cwd ui build",
+    "build:shop": "yarn --cwd merchant-shop build"
+  }
+}

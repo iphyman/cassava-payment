@@ -1,8 +1,10 @@
 # Code repository for cassava Pay
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/97533f6f-5bb3-48d0-9a3e-56c159986c37/deploy-status)](https://app.netlify.com/sites/cassavapay/deploys)
+
 An open source non custodial cryptocurrency payment gateway offering merchants easy integration to their store or website.
 
-### [Disclaimer] this is not yet a production ready software but a prototype, a more secure and well tested service will be found on cassavaSwap org repository [https://github.com/cassavaswap]
+[Disclaimer] this is not yet a production ready software but a prototype, a more secure and well tested service will be found on cassavaSwap org repository [https://github.com/cassavaswap]
 
 ## Design
 
@@ -51,3 +53,50 @@ On successfull processing of the create merchant account request, the following 
 - API key
 
 You will need this 2 piece of data to authenticate with our service RESTFUL endpoints
+
+You might expeirence slow response from the service. This think is caused by the sandbox mongoDb client.
+
+## Tech stack
+
+- [] Typescript
+- [] Amazon ApiGateway
+- [] Amazon Key management service (KMS)
+- [] MongoDb
+
+## How to generate invoice
+
+From your website or store send a post request to our invoice endpoint, if your request is processed successfully you will receive a json response containing a redirect url and an invoice id.
+
+The easiest way to accept payment is to redirect your customers to our checkout page and successful processing of the transaction, your client is redirected back to your platform.
+
+You can also query our GET invoice endpoint with this returned invoice ID to get the invoice details if you want to handle displaying the information to your client. You can also poll on this endpoint every minute to get transaction status of the invoice.
+
+Sample request
+
+```JSON
+// JSON post payload
+{
+  "item_description": "hello buy bitcoin easily with reef",
+  "merchant_id": "123dffffff",
+  "price": 23,
+  "blockchain": "REEF",
+  "redirect_url": "http://google.com",
+  "close_url": "https://facebook.com"
+}
+```
+
+On successful processing of the request, you will receive a response as below;
+
+```JSON
+// JSON response
+{
+    "data": {
+        "url": "https://cassavapay.netlify.app/checkout/61bfbba2b77a09da7cd976a6",
+        "invoice_id": "61bfbba2b77a09da7cd976a6"
+    },
+    "message": "success"
+}
+```
+
+Do not rely on the response header, always check the response body. A valid response will always contain data and message "success".
+To process this invoice you need to redirect your clients to the url or you can fetch the invoice details and dislay to your client.
