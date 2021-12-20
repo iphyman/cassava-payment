@@ -60,7 +60,7 @@ export const Transactions = () => {
             </td>
           </tr>
         )}
-        {!isLoading && transactions.length === 0 && (
+        {!isLoading && transactions && transactions.length === 0 && (
           <tr>
             <td className="text-center" colSpan={7}>
               No Transaction yet!
@@ -68,6 +68,7 @@ export const Transactions = () => {
           </tr>
         )}
         {!isLoading &&
+          transactions &&
           transactions.length > 0 &&
           transactions.map((transaction, index) => (
             <tr key={index}>
