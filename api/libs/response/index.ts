@@ -6,7 +6,7 @@ import {
   ForbiddenResult,
   InternalServerErrorResult,
   NotFoundResult
-} from "./errors";
+} from "../errors";
 import { ErrorCode, HttpStatusCode } from "libs/configs";
 
 export class Response {
@@ -75,9 +75,7 @@ export class Response {
 
   private static _returnAs<T>(result: T, statusCode: number): ApiResponse {
     const bodyObject: ErrorResponseBody | T =
-      result instanceof ErrorResult
-        ? { error: result, message: "error" }
-        : result;
+      result instanceof ErrorResult ? { error: result } : result;
 
     const response: ApiResponse = {
       statusCode,
@@ -90,7 +88,10 @@ export class Response {
         "Access-Control-Allow-Origin": "*",
         "X-Requested-With": "*"
       },
-      body: JSON.stringify(bodyObject)
+      body: JSON.stringify({
+        ...bodyObject,
+        message: "error"
+      })
     };
 
     return response;

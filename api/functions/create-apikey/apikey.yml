@@ -7,9 +7,9 @@ createApiKey:
         cors: true
         method: POST
         authorizer: aws_iam
-        # request:
-        #   schemas:
-        #     application/json:
-        #       schema: ${file(libs/schemas/createApiKeySchema.json)}
-        #       name: CreateApiKeyModel
-        #       description: "Validation model for issuing an Api key"
+        request:
+          schemas:
+            application/json:
+              schema: ${file(libs/schemas/createApiKeySchema.json)}
+              name: CreateApiKeyModel
+              description: "Validation model for issuing an Api key"

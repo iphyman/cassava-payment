@@ -4,27 +4,40 @@
 
 An open source non custodial cryptocurrency payment gateway offering merchants easy integration to their store or website.
 
-[Disclaimer] this is not yet a production ready software but a prototype, a more secure and well tested service will be found on cassavaSwap org repository [https://github.com/cassavaswap]
+[Disclaimer] this is not yet a production ready software but a prototype, a more secure and well tested service will be found on [CassavaSwap org repository](https://github.com/cassavaswap)
 
-## Design
+## Overview
 
-This project is designed in a modular manner offering easy extention of the project to other blockchain.
+When the service API receive a request to create a new invoice, it generate a new wallet account for the blockchain specified in the request body.
+This newly created wallet account mnemonic is then encrypted with aws KMS and then stored in database.
+The reef blockchain is monitored listening for every transferKeepAlive, transfer and balances events contained in extrinsic. If it finds any of our watched address, it then forwards the following details from the signed extrinsic to a function that forward's the fund to merchant cold wallet, stores it in database and update transaction status:
 
-## Api keys:
+- signer (From address)
+- destination (To address)
+- value (Transaction amount)
 
-pro-api-key: sWXn6ivhrM7LOSsODLiUw6vKKuuKUM9Z8WZfyqWW
-free-forever-api-key: BzSJPxkiXw5ozBJ0Z6S5T2TH20eqRqyh6APX7hl0
+A cron job runs every 2 minutes to update invoice status and another checks for balance updates. This has advantages over subscribing each invoice for balance update.
+We can have a single instance of lambda watching the blockchain for balance update for longer period against spinning a new instance on every invoice.
 
-## Rest Endpoints:
+In production the cron runtime will be shorten to 40 seconds which is reef blockchain transaction finality interval.
 
-- POST - https://wepkqk8q5l.execute-api.us-west-2.amazonaws.com/dev/merchant/signup
-- POST - https://wepkqk8q5l.execute-api.us-west-2.amazonaws.com/dev/invoices
-- GET - https://wepkqk8q5l.execute-api.us-west-2.amazonaws.com/dev/invoices/{invoiceId}
-- GET - https://wepkqk8q5l.execute-api.us-west-2.amazonaws.com/dev/invoices/{invoiceId}
-- GET - https://wepkqk8q5l.execute-api.us-west-2.amazonaws.com/dev/invoices
-- GET - https://wepkqk8q5l.execute-api.us-west-2.amazonaws.com/dev/invoices
-- GET - https://wepkqk8q5l.execute-api.us-west-2.amazonaws.com/dev/merchants/accounts
-- GET - https://wepkqk8q5l.execute-api.us-west-2.amazonaws.com/dev/merchants/transactions
+## Test Api keys:
+
+- pro-api-key: jWG2ky2CnM7cLTYnEHILULA8hbbsQh710iSuVozg
+- free-forever-api-key: Q2ZLPyLcpm56sa4JIqkIp5Hym7nnec1x32gs6TTI
+
+## Restful Endpoints:
+
+- BASE URL
+  - https://cprwagrht7.execute-api.us-west-2.amazonaws.com/dev/
+- CREATE INVOICE
+  - POST - v1/invoices
+- FETCH INVOICE
+  - GET - v1/invoices/{invoiceId}
+- FETCH INVOICES
+  - GET - v1/invoices
+
+You can obtain credentials to make API calls from our [service UI](https://cassavapay.netlify.app). Every API call requires authentication, you will need to add ` x-api-key` header to your request.
 
 ## How It Works
 
@@ -61,6 +74,7 @@ You might expeirence slow response from the service. This think is caused by the
 - [] Typescript
 - [] Amazon ApiGateway
 - [] Amazon Key management service (KMS)
+- [] Amazon Amplify
 - [] MongoDb
 
 ## How to generate invoice
@@ -74,7 +88,6 @@ You can also query our GET invoice endpoint with this returned invoice ID to get
 Sample request
 
 ```JSON
-// JSON post payload
 {
   "item_description": "hello buy bitcoin easily with reef",
   "merchant_id": "123dffffff",
@@ -88,7 +101,6 @@ Sample request
 On successful processing of the request, you will receive a response as below;
 
 ```JSON
-// JSON response
 {
     "data": {
         "url": "https://cassavapay.netlify.app/checkout/61bfbba2b77a09da7cd976a6",
@@ -99,12 +111,10 @@ On successful processing of the request, you will receive a response as below;
 ```
 
 Do not rely on the response header, always check the response body. A valid response will always contain data and message "success".
-To process this invoice you need to redirect your clients to the url or you can fetch the invoice details and dislay to your client.
-Endpoint to get invoice details. Remember to include x-api-key in the header of your request.
+To process this invoice you need to redirect your clients to the url or you can fetch the invoice details and display to your client.
+Remember to include x-api-key in the header of your request.
 
-- GET - https://pykexynsl6.execute-api.us-west-2.amazonaws.com/dev/invoices/{invoiceId}
-
-A successful response will look like below.
+A successful GET INVOICE request response will look like below.
 
 ```JSON
 {
@@ -128,3 +138,28 @@ A successful response will look like below.
     "message": "success"
 }
 ```
+
+## API Folder structure
+
+- functions
+  - admin
+  - create-apiKey
+  - create-invoice
+  - cron
+  - get-invoice
+  - get-invoices
+  - merchant
+- libs
+  - configs
+  - constants
+  - errors
+  - invoice
+  - kms
+  - merchant
+  - mongodb
+  - reef
+  - response
+  - schemas
+- models
+- resources
+- typings

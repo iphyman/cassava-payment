@@ -5,7 +5,8 @@
   "required": [
     "merchant_id",
     "price",
-    "redirect_url"
+    "redirect_url",
+    "notification_url"
   ],
   "properties": {
     "order_id": {
@@ -83,20 +84,16 @@
     },
     "currency": {
       "type": "string",
-      "minLength": 3,
-      "maxLength": 4,
       "title": "Currency",
       "description": "Merchants pricing currency"
     },
     "blockchain": {
       "type": "string",
-      "minLength": 3,
-      "maxLength": 4,
       "title": "Blockchain",
       "description": "The blockchain you do want to receive payment on"
     },
     "price": {
-      "type": "number",
+      "type": "string",
       "title": "Product price",
       "description": "Merchant price for the product, service or item"
     },

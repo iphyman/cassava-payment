@@ -19,7 +19,7 @@ getInvoiceFromApi:
     - http:
         path: /v1/invoices/{invoiceId}
         method: GET
-        private: false # public for testing
+        private: true
         request:
           parameters:
             paths:

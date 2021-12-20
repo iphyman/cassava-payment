@@ -1,4 +1,4 @@
-import { Response } from "libs";
+import { Response } from "libs/response";
 import { MerchantModel } from "models/merchant";
 import { ApiHandler } from "typings";
 

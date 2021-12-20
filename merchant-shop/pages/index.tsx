@@ -15,7 +15,7 @@ import fetch from "unfetch";
 import { Alert, AlertModel } from "../components/Alert";
 
 const Home: NextPage = () => {
-  const processOrder = async (amount: number) => {
+  const processOrder = async (amount: string) => {
     Alert("Do not refresh the page we are processing your order", "info");
 
     const res = await fetch(
@@ -32,7 +32,7 @@ const Home: NextPage = () => {
           price: amount,
           blockchain: "REEF",
           redirect_url: "http://barbershop.netlify.app/successful",
-          close_url: "http://barbershop.netlify.app",
+          close_url: "http://barbershop.netlify.app/cancelled",
         }),
       }
     );
@@ -63,14 +63,14 @@ const Home: NextPage = () => {
         </Title>
 
         <Grid>
-          <Card onClick={() => processOrder(20)}>
-            <h2>Buy me a beer</h2>
-            <p>Click to pay for 20 REEF for this guys beer.</p>
+          <Card onClick={() => processOrder("20000000000000000000")}>
+            <h2>Buy a beer</h2>
+            <p>Click to pay for 20 REEF for beer.</p>
           </Card>
 
-          <Card onClick={() => processOrder(30)}>
-            <h2>Buy me shawarmer</h2>
-            <p>Click to pay 30 REEF for this guys sharwarmer.</p>
+          <Card onClick={() => processOrder("30000000000000000000")}>
+            <h2>Buy shawarmer</h2>
+            <p>Click to pay 30 REEF for sharwarmer.</p>
           </Card>
         </Grid>
       </PageContent>

@@ -43,6 +43,7 @@ functions:
   - ${file(functions/create-invoice/invoice.yml)}
   - ${file(functions/cron/expired-cron.yml)}
   - ${file(functions/cron/reef-cron.yml)}
+  - ${file(functions/cron/webhook-cron.yml)}
   - ${file(functions/get-invoice/invoice.yml)}
   - ${file(functions/get-invoices/invoice.yml)}
   - ${file(functions/merchant/merchant-account.yml)}

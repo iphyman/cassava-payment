@@ -24,5 +24,5 @@ const schema: Schema = new Schema<Block>(
 export const BlockModel = async (): Promise<Model<Block>> => {
   const connection = await getConnection();
 
-  return connection.model<Block>("BlockModel", schema);
+  return connection.model<Block>("Block", schema);
 };

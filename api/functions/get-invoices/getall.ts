@@ -1,4 +1,4 @@
-import { Response } from "libs";
+import { Response } from "libs/response";
 import { GetInvoice } from "libs/invoice/get";
 import { ApiHandler } from "typings";
 

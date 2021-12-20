@@ -1,23 +1,14 @@
-import {
-  mnemonicGenerate,
-  mnemonicToMiniSecret,
-  encodeAddress,
-  cryptoWaitReady,
-  sr25519PairFromSeed
-} from "@polkadot/util-crypto";
 import { Keyring, WsProvider, ApiPromise } from "@polkadot/api";
 import { options } from "@reef-defi/api";
 import { REEF_RPC_ENDPOINT } from "libs/configs";
 import { KMS } from "libs/kms";
-import { ICreateWallet } from "typings/reef";
 import { WalletModel } from "models/wallet";
 import { MerchantModel } from "models/merchant";
 import { BlockModel } from "models/block";
 import { InvoiceModel } from "models/invoice";
 
-export class Reef {
+export class ReefTransaction {
   private kms: KMS;
-  // private provider: WsProvider;
   private api: ApiPromise;
 
   constructor() {
@@ -25,24 +16,6 @@ export class Reef {
     const provider = new WsProvider(REEF_RPC_ENDPOINT);
     this.api = new ApiPromise(options({ provider }));
   }
-
-  public createWallet = async (): Promise<ICreateWallet> => {
-    await cryptoWaitReady();
-    const mnemonic = mnemonicGenerate(12);
-    const seed = mnemonicToMiniSecret(mnemonic);
-    const pair = sr25519PairFromSeed(seed);
-
-    const address = encodeAddress(pair.publicKey, 42);
-    const encrypted = await this.kms.encrypt(mnemonic);
-
-    if (encrypted && encrypted.CiphertextBlob) {
-      const encryptedPrivateKey = encrypted.CiphertextBlob.toString();
-
-      return { wallet_address: address, private_key: encryptedPrivateKey };
-    }
-
-    return null;
-  };
 
   public processTransaction = async (
     wallet_address: string,

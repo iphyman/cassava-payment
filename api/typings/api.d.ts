@@ -43,5 +43,4 @@ export type ApiResponse = APIGatewayProxyResult;
 
 export interface ErrorResponseBody {
   error: ErrorResult;
-  message: string;
 }

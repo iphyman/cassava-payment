@@ -1,0 +1,6 @@
+callMerchantWebhook:
+  description: endpoint called every 2 minutes to send POST notification event to merchant webhook.
+  handler: functions/cron/webhook.handler
+  events:
+    - eventBridge:
+        schedule: rate(2 minutes)

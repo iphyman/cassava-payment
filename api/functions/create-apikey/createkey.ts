@@ -1,4 +1,4 @@
-import { Response } from "libs";
+import { Response } from "libs/response";
 import { MerchantApiKey } from "libs/merchant/apikey";
 import type { CreateApiKeyPayload } from "libs/schemas/createApiKeySchema";
 import { ApiHandler } from "typings";

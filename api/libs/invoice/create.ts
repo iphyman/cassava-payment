@@ -1,7 +1,7 @@
 import { InvoiceModel } from "models/invoice";
 import type { CreateInvoicePayload } from "libs/schemas/createInvoiceSchema";
 import type { ICreateWallet } from "typings/reef";
-import { Reef } from "libs/reef";
+import { ReefWallet } from "libs/reef/wallet";
 import { TRANSACTION_TIME } from "libs/constants";
 import { WalletModel } from "models/wallet";
 
@@ -15,7 +15,7 @@ export class InvoiceCreator {
     switch (payload.blockchain) {
       case "REEF":
         {
-          const reef = new Reef();
+          const reef = new ReefWallet();
           wallet = await reef.createWallet();
         }
         break;

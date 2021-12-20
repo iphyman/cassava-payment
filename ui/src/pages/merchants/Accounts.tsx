@@ -12,7 +12,6 @@ export const Accounts = () => {
       const data = await API.get("cassavaPay", "/merchants/accounts", {
         body: {},
       });
-      console.log(data.data);
       setAccounts(data.data);
       setIsLoading(false);
     } catch (error) {

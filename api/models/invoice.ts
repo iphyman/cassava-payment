@@ -27,7 +27,9 @@ export interface Invoice {
   currency?: string;
   price: string;
   amount_paid?: string;
-  notification_url?: string;
+  notification_url: string;
+  notification_url_call_count: number;
+  notification_url_response: "OK" | "UNKNOWN";
   redirect_url: string;
   close_url?: string;
   expiry_time: Date;
@@ -58,7 +60,14 @@ const schema = new Schema<Invoice>(
     currency: { type: String, default: "REEF" },
     price: { type: String, required: true },
     amount_paid: { type: String, default: "0.0" },
-    notification_url: { type: String, required: false },
+    notification_url: { type: String, required: true },
+    notification_url_call_count: { type: Number, required: true, default: 0 },
+    notification_url_response: {
+      type: String,
+      required: false,
+      enum: ["OK", "UNKNOWN"],
+      default: "UNKNOWN"
+    },
     redirect_url: { type: String, required: true },
     close_url: { type: String, required: false },
     expiry_time: { type: Date, required: false, default: new Date() },
@@ -73,5 +82,5 @@ const schema = new Schema<Invoice>(
 export const InvoiceModel = async (): Promise<Model<Invoice>> => {
   const connection = await getConnection();
 
-  return connection.model<Invoice>("InvoiceModel", schema);
+  return connection.model<Invoice>("Invoice", schema);
 };

@@ -90,13 +90,35 @@ export const Checkout = () => {
     return timeLeftInSecs;
   };
 
-  const loadInvoice = async () => {
+  const checkInvoice = async () => {
     try {
       const res = await API.get("cassavaPay", `/invoices/${params.invoiceId}`, {
         body: {},
       });
       setIsLoading(false);
       setInvoice(res.data);
+
+      if (invoice) {
+        const expiryTimestamp = new Date(invoice.expiry_time).getTime();
+        // eslint-disable-next-line
+        expiryTime = calculateTimeLeft(expiryTimestamp);
+
+        if (invoice.status === "expired") {
+          Alert("Expired invoice", "error");
+          navigate("/");
+        }
+
+        if (invoice.status === "paid") {
+          Alert(
+            "Payment received, you will be redirected to the merchant website in 5 seconds",
+            "success"
+          );
+
+          setTimeout(() => {
+            window.location.replace = invoice.redirect_url;
+          }, 5000);
+        }
+      }
     } catch (error) {
       // const err = error as any;
       Alert("Invalid checkout url!", "error");
@@ -105,26 +127,11 @@ export const Checkout = () => {
   };
 
   useEffect(() => {
-    loadInvoice();
-
-    if (invoice && invoice.status === "expired") {
-      Alert("Expired invoice", "error");
-      navigate("/");
-    }
-
-    if (invoice) {
-      const expiryTimestamp = new Date(invoice.expiry_time).getTime();
-      // eslint-disable-next-line
-      expiryTime = calculateTimeLeft(expiryTimestamp);
-    }
-
-    if (invoice && invoice.status === "expired") {
-      Alert("Expired invoice", "error");
-      navigate("/");
-    }
-
+    checkInvoice();
     // eslint-disable-next-line
   }, []);
+
+  setInterval(checkInvoice, 60000);
 
   return (
     <Container>
