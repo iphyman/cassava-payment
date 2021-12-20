@@ -13,7 +13,5 @@ export const handler: ApiHandler = async event => {
 
   if (!invoice) return Response.notFound(404, "No record found!");
 
-  console.log(invoice);
-
   return Response.ok(invoice);
 };

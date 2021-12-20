@@ -12,8 +12,8 @@ This project is designed in a modular manner offering easy extention of the proj
 
 ## Api keys:
 
-- pro-api-key: CsfbsxM8iQ4UTFFlJuskY7NqOfeUH8mAacOmQa2f
-- free-forever-api-key: LlLgG3EmAG4XJX3cJ2Mh94Jg3TpklS5o2FIfZLhc
+pro-api-key: sWXn6ivhrM7LOSsODLiUw6vKKuuKUM9Z8WZfyqWW
+free-forever-api-key: BzSJPxkiXw5ozBJ0Z6S5T2TH20eqRqyh6APX7hl0
 
 ## Rest Endpoints:
 
@@ -100,3 +100,31 @@ On successful processing of the request, you will receive a response as below;
 
 Do not rely on the response header, always check the response body. A valid response will always contain data and message "success".
 To process this invoice you need to redirect your clients to the url or you can fetch the invoice details and dislay to your client.
+Endpoint to get invoice details. Remember to include x-api-key in the header of your request.
+
+- GET - https://pykexynsl6.execute-api.us-west-2.amazonaws.com/dev/invoices/{invoiceId}
+
+A successful response will look like below.
+
+```JSON
+{
+    "data": {
+        "_id": "61bf7c4860f7730a19c3b521",
+        "item_description": "hello buy bitcoin easily with reef",
+        "merchant_id": "123dffffff",
+        "wallet_address": "5CPru7d18deNyKS9YyT4S9J9k84NFsSb34P1LeNuhtwue3Wx",
+        "currency": "USD",
+        "price": 23,
+        "amount_paid": 0,
+        "redirect_url": "http://google.com",
+        "close_url": "https://facebook.com",
+        "expiry_time": "2021-12-19T19:09:02.155Z",
+        "watched_address": false,
+        "status": "expired",
+        "created_at": "2021-12-19T18:39:04.971Z",
+        "updated_at": "2021-12-19T23:57:55.141Z",
+        "__v": 0
+    },
+    "message": "success"
+}
+```

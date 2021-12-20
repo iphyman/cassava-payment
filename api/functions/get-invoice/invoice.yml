@@ -6,21 +6,21 @@ getInvoiceFromServiceUi:
         path: /invoices/{invoiceId}
         cors: true
         method: GET
-        authorizer: aws_iam
+        #authorizer: aws_iam #public for testing
         request:
           parameters:
             paths:
               invoiceId: true
 
-# getInvoiceFromApi:
-#   description: endpoint for merchants to get an invoice details
-#   handler: functions/get-invoice/get.handler
-#   events:
-#     - http:
-#         path: /api/invoices/{invoiceId}
-#         method: GET
-#         private: true
-#         request:
-#           parameters:
-#             paths:
-#               invoiceId: true
+getInvoiceFromApi:
+  description: endpoint for merchants to get an invoice details
+  handler: functions/get-invoice/get.handler
+  events:
+    - http:
+        path: /v1/invoices/{invoiceId}
+        method: GET
+        private: false # public for testing
+        request:
+          parameters:
+            paths:
+              invoiceId: true

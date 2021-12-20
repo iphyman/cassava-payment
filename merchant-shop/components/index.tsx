@@ -54,7 +54,7 @@ export const Grid = styled.div`
   }
 `;
 
-export const Card = styled.a`
+export const Card = styled.button`
   margin: 1rem;
   padding: 1.5rem;
   text-align: left;
@@ -64,6 +64,7 @@ export const Card = styled.a`
   border-radius: 10px;
   transition: all 0.5s ease, border-color 0.15s ease;
   max-width: 300px;
+  cursor: pointer;
 
   h2 {
     margin: 0 0 1rem 0;

@@ -53,7 +53,7 @@ export const Accounts = () => {
               </td>
             </tr>
           )}
-          {!isLoading && accounts.length === 0 && (
+          {!isLoading && accounts && accounts.length === 0 && (
             <tr>
               <td className="text-center" colSpan={5}>
                 No Merchant account yet!
@@ -62,6 +62,7 @@ export const Accounts = () => {
           )}
 
           {!isLoading &&
+            accounts &&
             accounts.length > 0 &&
             accounts.map((account, index) => (
               <tr key={index}>

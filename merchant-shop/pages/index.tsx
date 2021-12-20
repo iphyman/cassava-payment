@@ -6,73 +6,89 @@ import {
   Card,
   Title,
   Footer,
-  Text,
   Grid,
   PageContent,
   Logo,
 } from "../components";
 import { Header } from "../components/Header";
+import fetch from "unfetch";
+import { Alert, AlertModel } from "../components/Alert";
 
 const Home: NextPage = () => {
+  const processOrder = async (amount: number) => {
+    Alert("Do not refresh the page we are processing your order", "info");
+
+    const res = await fetch(
+      "https://pykexynsl6.execute-api.us-west-2.amazonaws.com/dev/invoices",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": "sWXn6ivhrM7LOSsODLiUw6vKKuuKUM9Z8WZfyqWW",
+        },
+        body: JSON.stringify({
+          item_description: "Buy something for this dude",
+          merchant_id: "1234567889",
+          price: amount,
+          blockchain: "REEF",
+          redirect_url: "http://barbershop.netlify.app/successful",
+          close_url: "http://barbershop.netlify.app",
+        }),
+      }
+    );
+
+    const { url } = await res.json();
+
+    if (url) return (window.location.href = url);
+    Alert(
+      "We are unable to process your request now, try again later",
+      "error"
+    );
+  };
+
   return (
     <PageWrapper>
       <Head>
-        <title>Cryptocurrency Payment Gateway | Home</title>
+        <title>Barber Shop | Home</title>
         <meta
           name="description"
-          content="Cryptocurrency payment gateway with support for reef, ethereum and binance blockchain"
+          content="A demo shop integrating cassavaPayment gateway"
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
       <PageContent>
         <Title>
-          Welcome to <a href="https://cassavaswap.com">CassavaPay</a>
+          Welcome to <a href="#">Barber Shop</a>
         </Title>
 
-        <Text>
-          CassavaPay is an opensource non-custodial cryptocurrency payment
-          gateway, we only manage code and infrastructure. Your customers can
-          now pay you with any of REEF, REEF20, ETH, ERC20, BNB, BEP20 tokens.
-        </Text>
-
         <Grid>
-          <Card href="https://cassavaswap.com">
-            <h2>Signup &rarr;</h2>
-            <p>Get started today by creating a new account.</p>
+          <Card onClick={() => processOrder(20)}>
+            <h2>Buy me a beer</h2>
+            <p>Click to pay for 20 REEF for this guys beer.</p>
           </Card>
 
-          <Card href="https://cassavaswap.com">
-            <h2>Login &rarr;</h2>
-            <p>Already have an account? login to continue.</p>
-          </Card>
-
-          <Card href="https://github.com/">
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example projects.</p>
-          </Card>
-
-          <Card href="#">
-            <h2>Demo &rarr;</h2>
-            <p>
-              Preview a demo checkout app implementing our core service API.
-            </p>
+          <Card onClick={() => processOrder(30)}>
+            <h2>Buy me shawarmer</h2>
+            <p>Click to pay 30 REEF for this guys sharwarmer.</p>
           </Card>
         </Grid>
       </PageContent>
 
       <Footer>
         <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+          href="https://reef.io"
           target="_blank"
           rel="noopener noreferrer"
+          style={{ display: "flex", alignItems: "center" }}
         >
           Powered by{" "}
           <Logo>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
+            <Image src="/reef.png" alt="Reef Logo" width={30} height={30} />
           </Logo>
         </a>
       </Footer>
+      <AlertModel />
     </PageWrapper>
   );
 };

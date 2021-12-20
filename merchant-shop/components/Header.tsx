@@ -57,19 +57,15 @@ export const Header = () => {
   return (
     <Nav>
       <Container>
-        <Logo href="/">CassavaPay</Logo>
+        <Logo href="/">Barber Shop</Logo>
         <NavItems>
           <NavItem>
-            <Link href="https://github.com">Github</Link>
+            <Link href="https://github.com/iphyman/cassava-payment">
+              Github
+            </Link>
           </NavItem>
           <NavItem>
-            <Link href="/merchants">Dashboard</Link>
-          </NavItem>
-          <NavItem>
-            <Link href="/signup">Signup</Link>
-          </NavItem>
-          <NavItem>
-            <Link href="/login">Login</Link>
+            <Link href="https://cassavapay.netlify.app">CassavaPay</Link>
           </NavItem>
         </NavItems>
       </Container>
