@@ -3,7 +3,6 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "required": [
-    "merchant_id",
     "price",
     "redirect_url",
     "notification_url"
