@@ -39,7 +39,7 @@ const Home: NextPage = () => {
     Alert("Do not refresh the page we are processing your order", "info");
 
     const res = await fetch(
-      "https://5kj7yuqgxi.execute-api.us-west-2.amazonaws.com/dev/v1/invoices",
+      "https://o7nts8jxsa.execute-api.us-west-2.amazonaws.com/dev/v1/invoices",
       {
         method: "POST",
         headers: {
