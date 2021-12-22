@@ -1,8 +1,5 @@
 export const config = {
   REGION: process.env.REACT_APP_REGION,
-  s3: {
-    BUCKET: process.env.REACT_APP_BUCKET,
-  },
   apiGateway: {
     URL: process.env.REACT_APP_API_URL,
   },
@@ -20,11 +17,6 @@ export const AmplifyConfig: any = {
     userPoolId: config.cognito.USER_POOL_ID,
     identityPoolId: config.cognito.IDENTITY_POOL_ID,
     userPoolWebClientId: config.cognito.APP_CLIENT_ID,
-  },
-  Storage: {
-    region: config.REGION,
-    bucket: config.s3.BUCKET,
-    identityPoolId: config.cognito.IDENTITY_POOL_ID,
   },
   API: {
     endpoints: [
