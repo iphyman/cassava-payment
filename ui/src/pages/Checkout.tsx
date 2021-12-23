@@ -129,7 +129,7 @@ export const Checkout = () => {
     } catch (error) {
       const err = error as any;
       console.log(err);
-      Alert("Invalid checkout url!", "error");
+      // Alert("Invalid checkout url!", "error");
       navigate("/");
     }
   };

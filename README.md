@@ -21,15 +21,19 @@ We can have a single instance of lambda watching the blockchain for balance upda
 
 In production the cron runtime will be shorten to 40 seconds which is reef blockchain transaction finality interval.
 
+## Demo endpoints
+
+- BASE API URL - https://o7nts8jxsa.execute-api.us-west-2.amazonaws.com/dev
+- Merchant shop - https://mybarber-shop.netlify.app/
+- Service Ui - https://cassavapay.netlify.app/
+
 ## Test Api keys:
 
-- pro-api-key: jWG2ky2CnM7cLTYnEHILULA8hbbsQh710iSuVozg
-- free-forever-api-key: Q2ZLPyLcpm56sa4JIqkIp5Hym7nnec1x32gs6TTI
+- pro-api-key: F96XhoM4FG3CXqlBU5Ptn30E7aQSN8te5QMDfkCz
+- free-forever-api-key: 69JPsEkoUq30HtwT8em8h63rFHpB6Y3o3raGV9ij
 
 ## Restful Endpoints:
 
-- BASE URL
-  - https://cprwagrht7.execute-api.us-west-2.amazonaws.com/dev/
 - CREATE INVOICE
   - POST - v1/invoices
 - FETCH INVOICE
