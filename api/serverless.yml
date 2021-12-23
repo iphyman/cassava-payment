@@ -1,3 +1,5 @@
+org: opensoftweb
+app: cassava-payment-api
 service: cassava-payment-api
 variablesResolutionMode: 20210326
 useDotenv: true

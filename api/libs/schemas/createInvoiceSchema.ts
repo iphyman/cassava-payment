@@ -20,17 +20,17 @@ export const createInvoiceSchema = {
   type: "object",
   properties: {
     order_id: { type: "string" },
-    item_description: { type: "string", minLength: 15 },
-    merchant_id: { type: "string", minLength: 20 },
+    item_description: { type: "string" },
+    merchant_id: { type: "string" },
     buyer: buyerSchema,
-    currency: { type: "string", minLength: 3, maxLength: 4 },
-    blockchain: { type: "string", minLength: 3, maxLength: 4 },
+    currency: { type: "string" },
+    blockchain: { type: "string" },
     price: { type: "number" },
     notification_url: { type: "string" },
     redirect_url: { type: "string" },
     close_url: { type: "number" }
   },
-  required: ["merchant_id", "price", "redirect_url"]
+  required: ["merchant_id", "price", "notification_url", "redirect_url"]
 } as const;
 
 export type CreateInvoicePayload = FromSchema<typeof createInvoiceSchema>;

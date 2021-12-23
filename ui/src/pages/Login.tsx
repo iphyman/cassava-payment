@@ -45,9 +45,9 @@ export const Login = () => {
 
     try {
       await Auth.signIn(email, password);
+      setIsLoading(false);
       Alert("Logged In successfully", "success");
       setIsAuthenticated(true);
-      setIsLoading(false);
       navigate("/merchants");
     } catch (error) {
       const err = error as any;

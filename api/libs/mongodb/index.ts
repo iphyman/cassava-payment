@@ -8,9 +8,6 @@ export const getConnection = async (): Promise<Connection> => {
     connection = createConnection(MONGO_URL, {
       bufferCommands: true
     });
-
-    connection;
   }
-
   return connection;
 };

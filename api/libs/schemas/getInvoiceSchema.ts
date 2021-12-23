@@ -13,7 +13,7 @@ export const getInvoiceSchema = {
       }
     }
   },
-  required: ["queryStringParameters", "merchant_id"]
+  required: ["merchant_id"]
 } as const;
 
 export type GetInvoicePayload = FromSchema<typeof getInvoiceSchema>;

@@ -29,7 +29,7 @@ export interface Invoice {
   amount_paid?: string;
   notification_url: string;
   notification_url_call_count: number;
-  notification_url_response: "OK" | "UNKNOWN";
+  notification_url_response?: "OK" | "UNKNOWN";
   redirect_url: string;
   close_url?: string;
   expiry_time: Date;
@@ -70,7 +70,7 @@ const schema = new Schema<Invoice>(
     },
     redirect_url: { type: String, required: true },
     close_url: { type: String, required: false },
-    expiry_time: { type: Date, required: false, default: new Date() },
+    expiry_time: { type: Date, required: true, default: new Date() },
     watched_address: { type: Boolean, required: true },
     status: { type: String, required: true }
   },

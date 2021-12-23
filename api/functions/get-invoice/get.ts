@@ -6,12 +6,12 @@ export const handler: ApiHandler = async event => {
   const invoiceId = event.pathParameters?.invoiceId;
   const controller = new GetInvoice();
   if (!invoiceId) {
-    return Response.notFound(422, "Provide the required invoice id");
+    return Response.error(422, "Provide the required invoice id");
   }
 
   const invoice = await controller.getInvoice(invoiceId);
 
-  if (!invoice) return Response.notFound(404, "No record found!");
+  if (!invoice) return Response.error(404, "No record found!");
 
   return Response.ok(invoice);
 };

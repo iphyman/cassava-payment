@@ -6,7 +6,7 @@ export const handler: ApiHandler = async event => {
   const userId = event.requestContext.identity.cognitoIdentityId;
 
   if (!userId) {
-    return Response.badRequest(
+    return Response.error(
       400,
       "You are not authorized to access this route"
     );

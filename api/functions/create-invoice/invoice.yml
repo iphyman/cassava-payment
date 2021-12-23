@@ -7,9 +7,9 @@ createInvoice:
         cors: true
         method: POST
         private: true
-        request:
-          schemas:
-            application/json:
-              schema: ${file(libs/schemas/createInvoiceSchema.json)}
-              name: CreateInvoiceModel
-              description: "Validation model for creating an invoice"
+        # request:
+        #   schemas:
+        #     application/json:
+        #       schema: ${file(libs/schemas/createInvoiceSchema.json)}
+        #       name: CreateInvoiceModel
+        #       description: "Validation model for creating an invoice"

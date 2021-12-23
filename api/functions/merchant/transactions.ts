@@ -7,17 +7,14 @@ export const handler: ApiHandler = async event => {
   const userId = event.requestContext.identity.cognitoIdentityId;
 
   if (!userId) {
-    return Response.badRequest(
-      400,
-      "You are not authorized to access this route"
-    );
+    return Response.error(401, "You are not authorized to access this route");
   }
 
   const merchantModel = await MerchantModel();
   // Using only one account for demo
   const account = await merchantModel.findOne({ user_id: userId }).lean();
 
-  if (!account) return Response.notFound(404, "No transactions yet!");
+  if (!account) return Response.error(404, "No transactions yet!");
 
   const walletModel = await WalletModel();
   const transactions = await walletModel

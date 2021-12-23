@@ -12,7 +12,6 @@ export const handler: ApiHandler = async event => {
   // TODO: better error code and description when no response
   if (!invoice) {
     return Response.badRequest(
-      422,
       "We could not process your request this moment, try again later"
     );
   }

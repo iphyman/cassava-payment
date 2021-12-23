@@ -3771,6 +3771,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/lambda-log@npm:^2.2.1":
+  version: 2.2.1
+  resolution: "@types/lambda-log@npm:2.2.1"
+  dependencies:
+    "@types/node": "*"
+  checksum: 73d2e56bccac9958e0d98b19b1031744d0a29f55df9f2cdba879c8eedc0e6ad92b3bcb0fc11a20c43773cdb17624919dbfccf5cd53c5fd1618afeaefb7abb793
+  languageName: node
+  linkType: hard
+
 "@types/lodash@npm:^4.14.123":
   version: 4.14.178
   resolution: "@types/lodash@npm:4.14.178"
@@ -5388,12 +5397,14 @@ __metadata:
     "@reef-defi/api": ^1.0.3
     "@reef-defi/type-definitions": ^1.0.3
     "@types/aws-lambda": ^8.10.84
+    "@types/lambda-log": ^2.2.1
     "@types/node": ^16.11.6
     "@types/serverless": ^1.78.39
     "@types/uuid": ^8.3.3
     aws-lambda: ^1.0.7
     dotenv: ^10.0.0
     json-schema-to-ts: ^1.6.4
+    lambda-log: ^3.1.0
     mongoose: ^6.1.0
     prettier: ^2.4.1
     rimraf: ^3.0.2
@@ -7631,6 +7642,13 @@ __metadata:
   version: 2.0.6
   resolution: "fast-levenshtein@npm:2.0.6"
   checksum: 92cfec0a8dfafd9c7a15fba8f2cc29cd0b62b85f056d99ce448bbcd9f708e18ab2764bda4dd5158364f4145a7c72788538994f0d1787b956ef0d1062b0f7c24c
+  languageName: node
+  linkType: hard
+
+"fast-safe-stringify@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "fast-safe-stringify@npm:2.1.1"
+  checksum: a851cbddc451745662f8f00ddb622d6766f9bd97642dabfd9a405fb0d646d69fc0b9a1243cbf67f5f18a39f40f6fa821737651ff1bceeba06c9992ca2dc5bd3d
   languageName: node
   linkType: hard
 
@@ -10403,6 +10421,15 @@ __metadata:
   dependencies:
     colornames: ^1.1.1
   checksum: c725c179099ca414ed7419e192313ffda23c6b130b644a6426f22b71f88fa42acf94575ef4a5e95f1ce03a40d515780ba1d322a790cc94a8d6e819636ea7fabd
+  languageName: node
+  linkType: hard
+
+"lambda-log@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "lambda-log@npm:3.1.0"
+  dependencies:
+    fast-safe-stringify: ^2.1.1
+  checksum: 92501aa0692f9b223d64b4745a0b3e5d80047567f5cd51913e878146007df666d67ce5f29276a1ae3c19e9ed7d9d996ba6b9692a9e9aaca7087d1120c809244e
   languageName: node
   linkType: hard
 

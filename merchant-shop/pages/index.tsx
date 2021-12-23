@@ -10,6 +10,7 @@ import { Alert, AlertModel } from "../components/Alert";
 interface FormInput {
   price: string;
   api_key: string;
+  merchant_id: string;
   notification_url: string;
   redirect_url: string;
 }
@@ -19,14 +20,16 @@ const Home: NextPage = () => {
   const [input, setInput] = useState<FormInput>({
     price: "20",
     api_key: "",
-    notification_url: "https://barber-shop.netlify.app/api/webhook",
-    redirect_url: "https://barber-shop.netlify.app/successful",
+    merchant_id: "",
+    notification_url: "https://mybarber-shop.netlify.app/api/webhook",
+    redirect_url: "https://mybarber-shop.netlify.app/successful",
   });
 
   const validateForm = () => {
     return (
       input.price &&
       input.api_key &&
+      input.merchant_id &&
       input.notification_url &&
       input.redirect_url
     );
@@ -48,6 +51,7 @@ const Home: NextPage = () => {
         },
         body: JSON.stringify({
           price: input.price,
+          merchant_id: input.merchant_id,
           notification_url: input.notification_url,
           redirect_url: input.redirect_url,
         }),
@@ -102,6 +106,20 @@ const Home: NextPage = () => {
               id="api-key"
               value={input.api_key}
               onChange={(e) => setInput({ ...input, api_key: e.target.value })}
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="merchant_id" className="form-label">
+              Merchant ID
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="merchant_id"
+              value={input.merchant_id}
+              onChange={(e) =>
+                setInput({ ...input, merchant_id: e.target.value })
+              }
             />
           </div>
           <div className="mb-3">

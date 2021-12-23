@@ -68,6 +68,12 @@ const CheckoutAmount = styled.div`
   margin-bottom: 1rem;
 `;
 
+const CheckoutWalletAddress = styled.div`
+  font-size: 12px;
+  font-weight: 600;
+  margin: 10px 0px;
+`;
+
 export const Checkout = () => {
   const [invoice, setInvoice] = useState<any>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -102,6 +108,7 @@ export const Checkout = () => {
         const expiryTimestamp = new Date(invoice.expiry_time).getTime();
         // eslint-disable-next-line
         expiryTime = calculateTimeLeft(expiryTimestamp);
+        console.log(expiryTime);
 
         if (invoice.status === "expired") {
           Alert("Expired invoice", "error");
@@ -120,7 +127,8 @@ export const Checkout = () => {
         }
       }
     } catch (error) {
-      // const err = error as any;
+      const err = error as any;
+      console.log(err);
       Alert("Invalid checkout url!", "error");
       navigate("/");
     }
@@ -150,7 +158,7 @@ export const Checkout = () => {
         </Loader>
       )}
 
-      {!isLoading && invoice && (
+      {!isLoading && expiryTime > 0 && (
         <Card>
           <CardHeader>
             <div>Copy</div>
@@ -183,8 +191,11 @@ export const Checkout = () => {
             <BAlert.Heading>Hey, there!</BAlert.Heading>
             <p>
               Send exactly only REEF token to below wallet address within the
-              payment window. {invoice.wallet_address}
+              payment window.
             </p>
+            <CheckoutWalletAddress>
+              {invoice.wallet_address}
+            </CheckoutWalletAddress>
           </BAlert>
           <CheckoutAmount>{invoice.price} REEF</CheckoutAmount>
           <QrContainer>

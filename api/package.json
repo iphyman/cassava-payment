@@ -12,7 +12,7 @@
     "clean": "rimraf .build .serverless .webpack",
     "build": "serverless package",
     "predeploy": "yarn run clean",
-    "deploy": "serverless deploy",
+    "deploy": "serverless deploy --verbose",
     "lint": "eslint --fix './{functions,services,shared,models}/**/*.ts'",
     "start": "serverless offline start",
     "test": "serverless-bundle test"
@@ -20,6 +20,7 @@
   "devDependencies": {
     "@reef-defi/type-definitions": "^1.0.3",
     "@types/aws-lambda": "^8.10.84",
+    "@types/lambda-log": "^2.2.1",
     "@types/node": "^16.11.6",
     "@types/serverless": "^1.78.39",
     "@types/uuid": "^8.3.3",
@@ -37,6 +38,7 @@
     "@polkadot/api": "^6.12.1",
     "@reef-defi/api": "^1.0.3",
     "dotenv": "^10.0.0",
+    "lambda-log": "^3.1.0",
     "mongoose": "^6.1.0",
     "unfetch": "^4.2.0",
     "uuid": "^8.3.2"

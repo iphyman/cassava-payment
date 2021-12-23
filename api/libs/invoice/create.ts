@@ -1,3 +1,4 @@
+import log from "lambda-log";
 import { InvoiceModel } from "models/invoice";
 import type { CreateInvoicePayload } from "libs/schemas/createInvoiceSchema";
 import type { ICreateWallet } from "typings/reef";
@@ -12,26 +13,26 @@ export class InvoiceCreator {
     let wallet: ICreateWallet = null;
     let response: string | null = null;
 
-    switch (payload.blockchain) {
-      case "REEF":
-        {
-          const reef = new ReefWallet();
-          wallet = await reef.createWallet();
-        }
-        break;
+    // switch (payload.blockchain) {
+    //   case "REEF":
+    //     {
+    const reef = new ReefWallet();
+    wallet = await reef.createWallet();
+    //     }
+    //     break;
 
-      case "ETH":
-        // {process ETH}
-        break;
+    //   case "ETH":
+    //     // {process ETH}
+    //     break;
 
-      case "BSC":
-        // {process BSC}
-        break;
+    //   case "BSC":
+    //     // {process BSC}
+    //     break;
 
-      default:
-        // do nothing, response will be null
-        break;
-    }
+    //   default:
+    //     // do nothing, response will be null
+    //     break;
+    // }
 
     if (!wallet || !wallet.wallet_address) return null;
 
@@ -73,7 +74,7 @@ export class InvoiceCreator {
 
       const walletModel = await WalletModel();
       await new walletModel({
-        invoice_id: invoice._id,
+        invoice_id: invoice.id,
         merchant_id,
         wallet_address: wallet.wallet_address,
         private_key: wallet.private_key
@@ -82,9 +83,9 @@ export class InvoiceCreator {
       await session.commitTransaction();
       await session.endSession();
       response = invoice._id;
-
       return response;
     } catch (error) {
+      log.error("mongoose error", { error });
       await session.abortTransaction();
       await session.endSession();
 

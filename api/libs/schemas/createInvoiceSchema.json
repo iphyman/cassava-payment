@@ -4,6 +4,7 @@
   "type": "object",
   "required": [
     "price",
+    "merchant_id",
     "redirect_url",
     "notification_url"
   ],

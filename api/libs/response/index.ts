@@ -1,62 +1,32 @@
-import { ApiResponse, ErrorResponseBody } from "typings/api";
-import {
-  BadRequestResult,
-  ConfigurationErrorResult,
-  ErrorResult,
-  ForbiddenResult,
-  InternalServerErrorResult,
-  NotFoundResult
-} from "../errors";
-import { ErrorCode, HttpStatusCode } from "libs/configs";
+import { ApiResponse } from "typings/api";
+import { HttpStatusCode } from "libs/configs";
 
 export class Response {
-  public static badRequest(code: number, message: string): ApiResponse {
-    const errorResult: BadRequestResult = new BadRequestResult(code, message);
-
-    return Response._returnAs<BadRequestResult>(
-      errorResult,
-      HttpStatusCode.BadRequest
-    );
+  public static badRequest(message: string): ApiResponse {
+    return Response._returnAs(HttpStatusCode.BadRequest, message);
   }
 
-  public static configurationError(code: number, message: string): ApiResponse {
-    const errorResult: ConfigurationErrorResult = new ConfigurationErrorResult(
-      code,
-      message
-    );
-
-    return Response._returnAs<ConfigurationErrorResult>(
-      errorResult,
-      HttpStatusCode.ConfigurationError
-    );
+  public static configurationError(message: string): ApiResponse {
+    return Response._returnAs(HttpStatusCode.ConfigurationError, message);
   }
 
-  public static forbidden(code: number, message: string): ApiResponse {
-    const errorResult: ForbiddenResult = new ForbiddenResult(code, message);
-
-    return Response._returnAs<ForbiddenResult>(
-      errorResult,
-      HttpStatusCode.Forbidden
-    );
+  public static forbidden(message: string): ApiResponse {
+    return Response._returnAs(HttpStatusCode.Forbidden, message);
   }
 
-  public static internalServerError(_error: Error): ApiResponse {
-    const errorResult: InternalServerErrorResult =
-      new InternalServerErrorResult(ErrorCode.GeneralError, _error.message);
-
-    return Response._returnAs<InternalServerErrorResult>(
-      errorResult,
-      HttpStatusCode.InternalServerError
-    );
+  public static error(code: number, message: string): ApiResponse {
+    return Response._returnAs(code, message);
   }
 
-  public static notFound(code: number, message: string): ApiResponse {
-    const errorResult: NotFoundResult = new NotFoundResult(code, message);
+  // public static internalServerError(_error: Error): ApiResponse {
+  //   return Response._returnAs(
+  //     HttpStatusCode.InternalServerError,
+  //     "internal server error"
+  //   );
+  // }
 
-    return Response._returnAs<NotFoundResult>(
-      errorResult,
-      HttpStatusCode.NotFound
-    );
+  public static notFound(message: string): ApiResponse {
+    return Response._returnAs(HttpStatusCode.NotFound, message);
   }
 
   public static ok<T>(result: T): ApiResponse {
@@ -73,10 +43,10 @@ export class Response {
     };
   }
 
-  private static _returnAs<T>(result: T, statusCode: number): ApiResponse {
-    const bodyObject: ErrorResponseBody | T =
-      result instanceof ErrorResult ? { error: result } : result;
-
+  private static _returnAs(
+    statusCode: number,
+    description: string
+  ): ApiResponse {
     const response: ApiResponse = {
       statusCode,
       headers: {
@@ -89,7 +59,10 @@ export class Response {
         "X-Requested-With": "*"
       },
       body: JSON.stringify({
-        ...bodyObject,
+        error: {
+          code: statusCode,
+          message: description
+        },
         message: "error"
       })
     };

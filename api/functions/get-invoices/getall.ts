@@ -10,7 +10,7 @@ export const handler: ApiHandler = async event => {
   const controller = new GetInvoice();
 
   if (!merchant_id) {
-    return Response.notFound(422, "Provide the required merchant id");
+    return Response.error(422, "Provide the required merchant id");
   }
 
   const invoice = controller.getInvoices(merchant_id, status);
