@@ -11,6 +11,6 @@ export const AWS_KMS_KEY_ID = "0405b7d6-5a40-41f3-895f-a5b61d07be99";
 export const AWS_REGION = "us-west-2";
 
 export const USAGE_PLANS = {
-  free: "kbvga3",
-  pro: "pq7ygd"
+  free: "qkdsqy",
+  pro: "nth52v"
 };
