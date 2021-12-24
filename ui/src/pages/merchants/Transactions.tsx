@@ -10,11 +10,7 @@ export const Transactions = () => {
 
   const loadTransactions = async () => {
     try {
-      const data = await API.get("cassavaPay", "/merchants/transactions", {
-        body: {},
-      });
-
-      console.log(data.data);
+      const data = await API.get("cassavaPay", "/merchants/transactions", {});
       setTransactions(data.data);
       setIsLoading(false);
     } catch (error) {
