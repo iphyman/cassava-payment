@@ -3,4 +3,4 @@ updateInvoiceStatus:
   handler: functions/cron/expired.handler
   events:
     - eventBridge:
-        schedule: rate(2 minutes)
+        schedule: rate(1 minute)

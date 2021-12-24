@@ -3,4 +3,4 @@ callMerchantWebhook:
   handler: functions/cron/webhook.handler
   events:
     - eventBridge:
-        schedule: rate(2 minutes)
+        schedule: rate(1 minute)
