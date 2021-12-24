@@ -1,3 +1,4 @@
+import log from "lambda-log";
 import { Response } from "libs/response";
 import { MerchantModel } from "models/merchant";
 import { WalletModel } from "models/wallet";
@@ -5,6 +6,7 @@ import { ApiHandler } from "typings";
 
 export const handler: ApiHandler = async event => {
   const userId = event.requestContext.identity.cognitoIdentityId;
+  log.info("current userId", { userId });
 
   if (!userId) {
     return Response.error(401, "You are not authorized to access this route");

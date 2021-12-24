@@ -7,7 +7,7 @@ export const handler = async (): Promise<void> => {
   const invoices = await invoiceModel
     .find({
       status: "paid",
-      notification_url_call_count: { $lt: 20 },
+      notification_url_call_count: { $lt: 3 },
       notification_url_response: "UNKNOWN"
     })
     .lean();
