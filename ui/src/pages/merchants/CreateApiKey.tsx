@@ -36,12 +36,13 @@ export const CreateApiKey = () => {
 
     try {
       await API.post("cassavaPay", "/merchant/signup", {
-        body: JSON.stringify(input),
+        body: { ...input },
       });
       Alert("New Merchant account creation successful", "success");
       setIsLoading(false);
       navigate("/merchants/");
     } catch (error) {
+      console.log(error);
       const err = error as any;
       Alert(err.message, "error");
       setIsLoading(false);
