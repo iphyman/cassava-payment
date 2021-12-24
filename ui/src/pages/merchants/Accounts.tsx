@@ -9,13 +9,12 @@ export const Accounts = () => {
 
   const loadAccounts = async () => {
     try {
-      const data = await API.get("cassavaPay", "/merchants/accounts", {
-        body: {},
-      });
+      const data = await API.get("cassavaPay", "/merchants/accounts", {});
       setAccounts(data.data);
       setIsLoading(false);
     } catch (error) {
       const err = error as any;
+      console.log(err);
       Alert(err.message, "error");
       setIsLoading(false);
     }
