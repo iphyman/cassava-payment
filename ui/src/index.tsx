@@ -12,7 +12,7 @@ import { AuthenticationProvider } from "./contexts/authentication";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { AmplifyConfig } from "./configs";
 
-const CLOCK_OFFSET = 10000;
+const CLOCK_OFFSET = 1000;
 
 Amplify.configure(AmplifyConfig);
 DateUtils.setClockOffset(CLOCK_OFFSET);
