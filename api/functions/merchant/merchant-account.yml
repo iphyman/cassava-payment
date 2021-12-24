@@ -1,5 +1,5 @@
 getMerchantAccountFromServiceUi:
-  description: endpoint for user to get all his/her merchant accounts
+  description: endpoint to get user merchant accounts
   handler: functions/merchant/accounts.handler
   events:
     - http:
