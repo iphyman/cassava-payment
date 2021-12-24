@@ -9,5 +9,8 @@
   "scripts": {
     "build:ui": "yarn --cwd ui build",
     "build:shop": "yarn --cwd merchant-shop build"
+  },
+  "dependencies": {
+    "@aws-amplify/core": "^4.3.11"
   }
 }

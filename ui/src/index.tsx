@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import Amplify from "aws-amplify";
+import { DateUtils } from "@aws-amplify/core";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { GlobalStyle } from "./GlobalStyle";
@@ -11,7 +12,10 @@ import { AuthenticationProvider } from "./contexts/authentication";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { AmplifyConfig } from "./configs";
 
+const CLOCK_OFFSET = 10000;
+
 Amplify.configure(AmplifyConfig);
+DateUtils.setClockOffset(CLOCK_OFFSET);
 
 ReactDOM.render(
   <React.StrictMode>
