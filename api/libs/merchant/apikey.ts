@@ -5,6 +5,7 @@ import {
   UpdateApiKeyCommand
 } from "@aws-sdk/client-api-gateway";
 import { v4 as uuidv4, v1 as uuidv1 } from "uuid";
+import log from "lambda-log";
 import type { CreateApiKeyPayload } from "libs/schemas/createApiKeySchema";
 import { Merchant, MerchantModel } from "models/merchant";
 import { AWS_REGION, USAGE_PLANS } from "libs/constants";
@@ -38,6 +39,7 @@ export class MerchantApiKey {
 
     try {
       const apiKey = await this.client.send(command);
+      log.info("New Api key", { apiKey });
 
       if (!apiKey || !apiKey.value) return response;
 
@@ -49,6 +51,8 @@ export class MerchantApiKey {
 
       await this.client.send(addToUsagePlan);
 
+      log.info("key added to usage plan");
+
       response = await new merchantModel({
         merchant_id,
         user_id,
@@ -59,6 +63,7 @@ export class MerchantApiKey {
         cold_wallet_address
       }).save();
     } catch (error) {
+      log.error("Mongo error", { error });
       //TODO: better error reporting to the caller|dev
       return response;
     }
