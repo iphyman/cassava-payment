@@ -17,6 +17,14 @@ export const AmplifyConfig: any = {
     userPoolId: config.cognito.USER_POOL_ID,
     identityPoolId: config.cognito.IDENTITY_POOL_ID,
     userPoolWebClientId: config.cognito.APP_CLIENT_ID,
+    identityPoolRegion: config.REGION,
+    cookieStorage: {
+      domain: "https://cassavapay.netlify.app",
+      path: "/",
+      expires: 1,
+      sameSite: "strict",
+      secure: true,
+    },
   },
   API: {
     endpoints: [
