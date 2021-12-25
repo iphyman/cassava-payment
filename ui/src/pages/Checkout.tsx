@@ -114,19 +114,19 @@ export const Checkout = () => {
         expiryTime = calculateTimeLeft(expiryTimestamp);
         console.log(expiryTime);
 
-        if (invoice.status === "expired") {
+        if (res.data.status === "expired") {
           Alert("Expired invoice", "error");
           navigate("/");
         }
 
-        if (invoice.status === "paid") {
+        if (res.data.status === "paid") {
           Alert(
             "Payment received, you will be redirected to the merchant website in 5 seconds",
             "success"
           );
 
           setTimeout(() => {
-            window.location.replace = invoice.redirect_url;
+            window.location.replace = res.data.redirect_url;
           }, 5000);
         }
       }
@@ -162,7 +162,7 @@ export const Checkout = () => {
         </Loader>
       )}
 
-      {!isLoading && invoice && expiryTime && (
+      {!isLoading && invoice && expiryTime > 0 && (
         <Card>
           <CardHeader>
             <div>Copy</div>
