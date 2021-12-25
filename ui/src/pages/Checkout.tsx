@@ -161,7 +161,7 @@ export const Checkout = () => {
         </Loader>
       )}
 
-      {!isLoading && invoice.expiry_time && (
+      {!isLoading && invoice && invoice.expiry_time && (
         <Card>
           <CardHeader>
             <div>Copy</div>
