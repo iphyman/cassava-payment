@@ -98,9 +98,12 @@ export const Checkout = () => {
 
   const checkInvoice = async () => {
     try {
-      const res = await API.get("cassavaPay", `/invoices/${params.invoiceId}`, {
-        body: {},
-      });
+      const res = await API.get(
+        "cassavaPay",
+        `/invoices/${params.invoiceId}`,
+        {}
+      );
+      console.log(res);
       setIsLoading(false);
       setInvoice(res.data);
 
@@ -130,7 +133,7 @@ export const Checkout = () => {
       const err = error as any;
       console.log(err);
       // Alert("Invalid checkout url!", "error");
-      navigate("/");
+      // navigate("/");
     }
   };
 
@@ -139,7 +142,7 @@ export const Checkout = () => {
     // eslint-disable-next-line
   }, []);
 
-  setInterval(checkInvoice, 60000);
+  // setInterval(checkInvoice, 60000);
 
   return (
     <Container>
@@ -158,7 +161,7 @@ export const Checkout = () => {
         </Loader>
       )}
 
-      {!isLoading && expiryTime > 0 && (
+      {!isLoading && invoice.expiry_time && (
         <Card>
           <CardHeader>
             <div>Copy</div>
