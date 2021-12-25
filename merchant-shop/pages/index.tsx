@@ -41,39 +41,36 @@ const Home: NextPage = () => {
 
     Alert("Do not refresh the page we are processing your order", "info");
 
-    const res = await fetch(
-      "https://o7nts8jxsa.execute-api.us-west-2.amazonaws.com/dev/v1/invoices",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Headers":
-            "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
-          "Access-Control-Allow-Methods": "OPTIONS,POST,DELETE,GET",
-          "Access-Control-Allow-Credentials": "false",
-          "Access-Control-Allow-Origin": "*",
-          "X-Requested-With": "*",
-          "x-api-key": input.api_key,
-        },
-        body: JSON.stringify({
-          price: input.price,
-          merchant_id: input.merchant_id,
-          notification_url: input.notification_url,
-          redirect_url: input.redirect_url,
-        }),
-      }
-    );
-
-    // const { url } = await res.json();
-    const data = await res.json();
-    console.log(data);
-    setIsLoading(false);
-
-    // if (url) return (window.location.href = url);
-    // Alert(
-    //   "We are unable to process your request now, try again later",
-    //   "error"
-    // );
+    try {
+      const res = await fetch(
+        "https://o7nts8jxsa.execute-api.us-west-2.amazonaws.com/dev/v1/invoices",
+        {
+          method: "POST",
+          headers: {
+            "x-api-key": input.api_key,
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Credentials": "true",
+          },
+          body: JSON.stringify({
+            price: input.price,
+            merchant_id: input.merchant_id,
+            notification_url: input.notification_url,
+            redirect_url: input.redirect_url,
+          }),
+        }
+      );
+      const resp = await res.json();
+      const url = resp.data.url;
+      if (url) return (window.location.href = url);
+      Alert(
+        "We are unable to process your request now, try again later",
+        "error"
+      );
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
   };
 
   return (

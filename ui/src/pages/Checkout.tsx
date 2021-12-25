@@ -107,8 +107,9 @@ export const Checkout = () => {
       setIsLoading(false);
       setInvoice(res.data);
 
-      if (invoice) {
-        const expiryTimestamp = new Date(invoice.expiry_time).getTime();
+      if (res && res.data) {
+        const exp = new Date(res.data.expiry_time);
+        const expiryTimestamp = exp.getTime();
         // eslint-disable-next-line
         expiryTime = calculateTimeLeft(expiryTimestamp);
         console.log(expiryTime);
@@ -142,7 +143,7 @@ export const Checkout = () => {
     // eslint-disable-next-line
   }, []);
 
-  // setInterval(checkInvoice, 60000);
+  setInterval(checkInvoice, 60000);
 
   return (
     <Container>
