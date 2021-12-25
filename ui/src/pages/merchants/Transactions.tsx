@@ -1,5 +1,4 @@
 import { API } from "aws-amplify";
-import { formatEther } from "ethers/lib/utils";
 import { useState, useEffect } from "react";
 import { Table, Spinner, Button } from "react-bootstrap";
 import { Alert } from "../../components/Alert";
@@ -23,10 +22,6 @@ export const Transactions = () => {
   useEffect(() => {
     loadTransactions();
   }, []);
-
-  const toReef = (value: any) => {
-    return formatEther(value) + " Reef";
-  };
 
   return (
     <Table striped bordered hover responsive>
@@ -68,7 +63,7 @@ export const Transactions = () => {
           transactions.length > 0 &&
           transactions.map((transaction, index) => (
             <tr key={index}>
-              <td className="no-wrap">{toReef(transaction.amount)}</td>
+              <td className="no-wrap">{transaction.amount}</td>
               <td className="no-wrap">{transaction.type}</td>
               <td className="no-wrap">{transaction.from_wallet}</td>
               <td className="no-wrap">{transaction.to_wallet}</td>

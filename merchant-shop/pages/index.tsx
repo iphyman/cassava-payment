@@ -4,22 +4,36 @@ import Image from "next/image";
 import { FormEvent, useState } from "react";
 import { PageWrapper, Title, Footer, PageContent, Logo } from "../components";
 import { Header } from "../components/Header";
-import fetch from "unfetch";
+import Amplify, { API } from "aws-amplify";
 import { Alert, AlertModel } from "../components/Alert";
 
 interface FormInput {
   price: string;
   api_key: string;
   merchant_id: string;
+  blockchain: string;
   notification_url: string;
   redirect_url: string;
 }
 
 const Home: NextPage = () => {
+  Amplify.configure({
+    API: {
+      endpoints: [
+        {
+          name: "cassavaPay",
+          endpoint:
+            "https://o7nts8jxsa.execute-api.us-west-2.amazonaws.com/dev",
+          region: "us-west-2",
+        },
+      ],
+    },
+  });
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [input, setInput] = useState<FormInput>({
     price: "20",
     api_key: "",
+    blockchain: "REEF",
     merchant_id: "",
     notification_url: "https://mybarber-shop.netlify.app/api/webhook",
     redirect_url: "https://mybarber-shop.netlify.app/successful",
@@ -49,20 +63,12 @@ const Home: NextPage = () => {
         redirect_url: input.redirect_url,
       });
 
-      const res = await fetch(
-        "https://o7nts8jxsa.execute-api.us-west-2.amazonaws.com/dev/v1/invoices",
-        {
-          method: "POST",
-          body: body,
-          headers: {
-            "x-api-key": input.api_key,
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "*",
-            "Access-Control-Allow-Headers": "*",
-          },
-        }
-      );
-      const resp = await res.json();
+      const resp = await API.post("cassavaPay", "/v1/invoices", {
+        headers: {
+          "X-Api-Key": input.api_key,
+        },
+        body: { ...input },
+      });
       const url = resp.data.url;
       if (url) return (window.location.href = url);
       Alert(
