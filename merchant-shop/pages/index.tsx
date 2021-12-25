@@ -47,6 +47,12 @@ const Home: NextPage = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Access-Control-Allow-Headers":
+            "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
+          "Access-Control-Allow-Methods": "OPTIONS,POST,DELETE,GET",
+          "Access-Control-Allow-Credentials": "true",
+          "Access-Control-Allow-Origin": "*",
+          "X-Requested-With": "*",
           "x-api-key": input.api_key,
         },
         body: JSON.stringify({
