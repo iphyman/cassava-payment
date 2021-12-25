@@ -59,6 +59,8 @@ const Home: NextPage = () => {
     );
 
     const { url } = await res.json();
+    const data = await res.json();
+    console.log(data);
     setIsLoading(false);
 
     if (url) return (window.location.href = url);
