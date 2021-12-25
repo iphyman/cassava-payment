@@ -143,7 +143,7 @@ export const Checkout = () => {
     // eslint-disable-next-line
   }, []);
 
-  setInterval(checkInvoice, 60000);
+  // setInterval(checkInvoice, 60000);
 
   return (
     <Container>
@@ -162,7 +162,7 @@ export const Checkout = () => {
         </Loader>
       )}
 
-      {!isLoading && invoice && invoice.expiry_time && (
+      {!isLoading && invoice && expiryTime && (
         <Card>
           <CardHeader>
             <div>Copy</div>

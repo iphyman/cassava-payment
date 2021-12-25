@@ -42,21 +42,27 @@ const Home: NextPage = () => {
     Alert("Do not refresh the page we are processing your order", "info");
 
     try {
+      const body = JSON.stringify({
+        price: input.price,
+        merchant_id: input.merchant_id,
+        notification_url: input.notification_url,
+        redirect_url: input.redirect_url,
+      });
+
       const res = await fetch(
         "https://o7nts8jxsa.execute-api.us-west-2.amazonaws.com/dev/v1/invoices",
         {
           method: "POST",
+          body: body,
           headers: {
             "x-api-key": input.api_key,
             "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Credentials": "true",
+            Accept: "*/*",
+            "Accept-Encoding": "gzip, deflate, br",
+            "Content-Type": "application/json",
+            "Content-Length": body.length + "",
+            Host: "https://mybarber-shop.netlify.app",
           },
-          body: JSON.stringify({
-            price: input.price,
-            merchant_id: input.merchant_id,
-            notification_url: input.notification_url,
-            redirect_url: input.redirect_url,
-          }),
         }
       );
       const resp = await res.json();
