@@ -57,11 +57,8 @@ const Home: NextPage = () => {
           headers: {
             "x-api-key": input.api_key,
             "Access-Control-Allow-Origin": "*",
-            Accept: "*/*",
-            "Accept-Encoding": "gzip, deflate, br",
-            "Content-Type": "application/json",
-            "Content-Length": body.length + "",
-            Host: "https://mybarber-shop.netlify.app",
+            "Access-Control-Allow-Methods": "*",
+            "Access-Control-Allow-Headers": "*",
           },
         }
       );
