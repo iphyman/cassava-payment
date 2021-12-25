@@ -60,7 +60,7 @@ export const Transactions = () => {
         )}
         {!isLoading &&
           transactions &&
-          transactions.length > 0 &&
+          Array.isArray(transactions) &&
           transactions.map((transaction, index) => (
             <tr key={index}>
               <td className="no-wrap">{transaction.amount}</td>

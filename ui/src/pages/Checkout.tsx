@@ -82,10 +82,11 @@ export const Checkout = () => {
   let expiryTime = 0;
 
   const calculateTimeLeft = (expiry: number): number => {
-    let timeLeftInSecs = 0;
+    let timeLeftInSecs = 60;
     const now = new Date().getTime();
+    const msExp = expiry - now;
 
-    if (expiry > now) {
+    if (msExp >= 0) {
       const time = new Date(expiry);
       const minLeft = time.getMinutes();
       const secsLeft = time.getSeconds();
@@ -103,7 +104,6 @@ export const Checkout = () => {
         `/invoices/${params.invoiceId}`,
         {}
       );
-      console.log(res);
       setIsLoading(false);
       setInvoice(res.data);
 
@@ -143,7 +143,7 @@ export const Checkout = () => {
     // eslint-disable-next-line
   }, []);
 
-  // setInterval(checkInvoice, 60000);
+  setInterval(checkInvoice, 60000);
 
   return (
     <Container>
@@ -162,7 +162,7 @@ export const Checkout = () => {
         </Loader>
       )}
 
-      {!isLoading && invoice && expiryTime > 0 && (
+      {!isLoading && invoice && expiryTime && (
         <Card>
           <CardHeader>
             <div>Copy</div>
