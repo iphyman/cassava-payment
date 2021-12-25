@@ -26,7 +26,7 @@ export const FREE_API_USAGE_PLAN_ID = "";
 
 export const NEW_BLOCK_SNS_TOPIC_ARN = "";
 
-export const REEF_RPC_ENDPOINT = "wss://rpc-testnet.reefscan.com/ws";
+export const REEF_RPC_ENDPOINT = "https://rpc.reefscan.com";
 
 export default async (): Promise<DotenvParseOutput & NodeJS.ProcessEnv> => {
   const envVars = dotenv.config({ path: ".env.local" }).parsed;

@@ -1,5 +1,7 @@
-import { Keyring, WsProvider, ApiPromise } from "@polkadot/api";
+import { Keyring, HttpProvider, ApiPromise } from "@polkadot/api";
 import { options } from "@reef-defi/api";
+import log from "lambda-log";
+import Web3Utils from "web3-utils";
 import { REEF_RPC_ENDPOINT } from "libs/configs";
 import { KMS } from "libs/kms";
 import { WalletModel } from "models/wallet";
@@ -13,7 +15,7 @@ export class ReefTransaction {
 
   constructor() {
     this.kms = new KMS();
-    const provider = new WsProvider(REEF_RPC_ENDPOINT);
+    const provider = new HttpProvider(REEF_RPC_ENDPOINT);
     this.api = new ApiPromise(options({ provider }));
   }
 
@@ -46,9 +48,13 @@ export class ReefTransaction {
 
     if (!decoded || !decoded.Plaintext || !merchant) return;
 
+    log.info("Transaction, wallet decoded");
+
     const mnemonic = decoded.Plaintext.toString();
     const receipient = merchant.cold_wallet_address;
     const txHash = await this.signTransaction(mnemonic, amount, receipient);
+
+    log.info("Transaction sent to merchant", { txHash });
 
     //Log transfer to merchant in db
     wallet.transactions?.push({
@@ -60,17 +66,22 @@ export class ReefTransaction {
     });
 
     await wallet.save();
+
+    log.info("Transaction, logged to db");
+
+    // await watchedAddress
+    //   .updateOne({
+    //     watched_address: false
+    //   })
+    //   .exec();
+
     await watchedAddress
       .updateOne({
-        watched_address: false
+        watched_address: false,
+        status: "paid",
+        amount_paid: amount
       })
       .exec();
-
-    await watchedAddress.updateOne({
-      watched_address: false,
-      status: "paid",
-      amount_paid: amount
-    });
   };
 
   private signTransaction = async (
@@ -129,21 +140,9 @@ export class ReefTransaction {
         const transaction: string[] = args.map(a => a.toString());
         const toAddress = transaction[0];
         const fromAddress = extrinsic.signer.toString();
-        const amount = transaction[1];
+        const amount = Web3Utils.fromWei(transaction[1]);
 
         await this.processTransaction(toAddress, amount, fromAddress);
-
-        // Update last synced block in database
-        const blockModel = await BlockModel();
-        await blockModel
-          .findOneAndUpdate(
-            { blockchain: "REEF_BLOCKCHAIN" },
-            {
-              block_height: blockHeight
-            },
-            { upsert: true, returnOriginal: false }
-          )
-          .exec();
       }
     });
   };
@@ -156,11 +155,23 @@ export class ReefTransaction {
 
     await this._processBlock(index + 1);
 
+    // Update last synced block in database
+    const blockModel = await BlockModel();
+    await blockModel
+      .findOneAndUpdate(
+        { blockchain: "REEF_BLOCKCHAIN" },
+        {
+          block_height: index + 1
+        },
+        { upsert: true, returnOriginal: false }
+      )
+      .exec();
+
     return await this._syncToLatestBlock(index + 1, latestBlockHeight);
   };
 
   public startSyncingBlocks = async (): Promise<void> => {
-    let lastSyncedBlockHeight = 1421817;
+    let lastSyncedBlockHeight = 1876900;
 
     const blockModel = await BlockModel();
     const blockHeightFromDb = await blockModel

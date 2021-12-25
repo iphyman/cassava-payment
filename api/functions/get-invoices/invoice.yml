@@ -23,6 +23,7 @@ getInvoicesFromApi:
         path: /v1/invoices
         method: GET
         private: true
+        cors: true
         request:
           parameters:
             querystrings:

@@ -5,9 +5,9 @@ import { ApiHandler } from "typings";
 
 export const handler: ApiHandler = async event => {
   const controller = new InvoiceCreator();
-  const body: CreateInvoicePayload = JSON.parse(event.body as string);
-  body.blockchain = "REEF"; // Only supporting REEF blockchain at th moment
-  const invoice = await controller.createInvoice(body);
+  const payload: CreateInvoicePayload = JSON.parse(event.body as string);
+  payload.blockchain = "REEF"; // Only supporting REEF blockchain at th moment
+  const invoice = await controller.createInvoice(payload);
 
   // TODO: better error code and description when no response
   if (!invoice) {
