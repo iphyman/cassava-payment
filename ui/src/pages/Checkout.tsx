@@ -83,7 +83,7 @@ export const Checkout = () => {
   const secondsLeft = (expiry: any): number => {
     const now = new Date().getTime();
     const exp = new Date(expiry).getTime();
-    let sec = (now - exp) / 1000;
+    let sec = (exp - now) / 1000;
 
     if (sec > 0) {
       return sec;
