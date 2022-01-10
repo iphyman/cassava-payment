@@ -79,22 +79,18 @@ export const Checkout = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   let params = useParams();
   let navigate = useNavigate();
-  let expiryTime = 0;
 
-  const calculateTimeLeft = (expiry: number): number => {
-    let timeLeftInSecs = 60;
+  const secondsLeft = (expiry: any): number => {
     const now = new Date().getTime();
-    const msExp = expiry - now;
+    const exp = new Date(expiry).getTime();
+    let sec = (now - exp) / 1000;
 
-    if (msExp >= 0) {
-      const time = new Date(expiry);
-      const minLeft = time.getMinutes();
-      const secsLeft = time.getSeconds();
-
-      timeLeftInSecs = minLeft * 60 + secsLeft;
+    if (sec > 0) {
+      return sec;
     }
 
-    return timeLeftInSecs;
+    sec = 0;
+    return sec;
   };
 
   const checkInvoice = async () => {
@@ -108,12 +104,6 @@ export const Checkout = () => {
       setInvoice(res.data);
 
       if (res && res.data) {
-        const exp = new Date(res.data.expiry_time);
-        const expiryTimestamp = exp.getTime();
-        // eslint-disable-next-line
-        expiryTime = calculateTimeLeft(expiryTimestamp);
-        console.log(expiryTime);
-
         if (res.data.status === "expired") {
           Alert("Expired invoice", "error");
           navigate("/");
@@ -162,13 +152,13 @@ export const Checkout = () => {
         </Loader>
       )}
 
-      {!isLoading && invoice && expiryTime && (
+      {!isLoading && invoice && invoice.expiry_time && (
         <Card>
           <CardHeader>
             <div>Copy</div>
             <CountdownCircleTimer
               isPlaying
-              duration={expiryTime}
+              duration={secondsLeft(invoice.expiry_time)}
               size={60}
               strokeWidth={4}
               colors={[
