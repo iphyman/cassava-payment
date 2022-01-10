@@ -93,47 +93,50 @@ export const Checkout = () => {
     return sec;
   };
 
-  const checkInvoice = async () => {
-    try {
-      const res = await API.get(
-        "cassavaPay",
-        `/invoices/${params.invoiceId}`,
-        {}
-      );
-      setIsLoading(false);
-      setInvoice(res.data);
-
-      if (res && res.data) {
-        if (res.data.status === "expired") {
-          Alert("Expired invoice", "error");
-          navigate("/");
-        }
-
-        if (res.data.status === "paid") {
-          Alert(
-            "Payment received, you will be redirected to the merchant website in 5 seconds",
-            "success"
-          );
-
-          setTimeout(() => {
-            window.location.replace = res.data.redirect_url;
-          }, 5000);
-        }
-      }
-    } catch (error) {
-      const err = error as any;
-      console.log(err);
-      // Alert("Invalid checkout url!", "error");
-      // navigate("/");
-    }
-  };
-
   useEffect(() => {
-    checkInvoice();
-    // eslint-disable-next-line
-  }, []);
+    const checkInvoice = async () => {
+      try {
+        const res = await API.get(
+          "cassavaPay",
+          `/invoices/${params.invoiceId}`,
+          {}
+        );
+        setIsLoading(false);
+        setInvoice(res.data);
 
-  setInterval(checkInvoice, 60000);
+        if (res && res.data) {
+          if (res.data.status === "expired") {
+            Alert("Expired invoice", "error");
+            navigate("/", { replace: true });
+          }
+
+          if (res.data.status === "paid") {
+            Alert(
+              "Payment received, you will be redirected to the merchant website in 5 seconds",
+              "success"
+            );
+
+            setTimeout(() => {
+              window.location.replace = res.data.redirect_url;
+            }, 5000);
+          }
+        }
+      } catch (error) {
+        const err = error as any;
+        console.log(err);
+        // Alert("Invalid checkout url!", "error");
+        // navigate("/");
+      }
+    };
+
+    checkInvoice();
+
+    const interval = setInterval(() => {
+      checkInvoice();
+    }, 30000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <Container>
@@ -162,9 +165,9 @@ export const Checkout = () => {
               size={60}
               strokeWidth={4}
               colors={[
-                ["#AA10E2", 0.33],
-                ["#F7B801", 0.33],
-                ["#A30000", 0.33],
+                ["#AA10E2", 0.6],
+                ["#F7B801", 0.3],
+                ["#A30000", 0.1],
               ]}
             >
               {({ remainingTime }) => {
