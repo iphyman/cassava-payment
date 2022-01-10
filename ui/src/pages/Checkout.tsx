@@ -136,7 +136,7 @@ export const Checkout = () => {
     }, 30000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [navigate, params.invoiceId]);
 
   return (
     <Container>
