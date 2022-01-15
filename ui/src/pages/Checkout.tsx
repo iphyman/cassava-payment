@@ -133,6 +133,7 @@ export const Checkout = () => {
 
     const interval = setInterval(() => {
       checkInvoice();
+      console.log("Invoice status updated");
     }, 30000);
 
     return () => clearInterval(interval);
